@@ -2,12 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config(); 
+require('dotenv').config({ path: './config.env' });
 
 const contactRoutes = require('./routes/contactRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
 const youtubeRoutes = require('./routes/youtubeRoutes');
-const commentRoutes = require('./routes/commentRoutes'); 
+const commentRoutes = require('./routes/commentRoutes');
 const blogRoutes = require('./routes/blogRoutes');
 const adminRoute = require('./routes/admin');
 
@@ -30,22 +30,21 @@ app.use('/api/youtube', youtubeRoutes);
 app.use('/api/comments', commentRoutes);
 app.use('/api', adminRoute);
 
-
 // Serve frontend in production
 if (process.env.NODE_ENV === 'production') {
   // Serve static files from frontend build
   app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
   // Catch-all route for React Router
-  app.get('/*', (req, res) => {
+  app.get('*', (req, res) => {
     res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
   });
+} else {
+  // In development only, keep a simple root route
+  app.get('/', (req, res) => {
+    res.send("Blog MERN Backend is running (dev mode)...");
+  });
 }
-
-// Basic API check route
-app.get('/apii', (req, res) => {
-  res.send("Blog MERN Backend is running...");
-});
 
 // Start Server
 const PORT = process.env.PORT || 5000;
