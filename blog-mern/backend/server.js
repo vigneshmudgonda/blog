@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const path = require('path');
-require('dotenv').config({ path: './config.env' });
+require('dotenv').config(); 
 
 const contactRoutes = require('./routes/contactRoutes');
 const reviewRoutes = require('./routes/reviewRoutes');
@@ -43,7 +43,7 @@ if (process.env.NODE_ENV === 'production') {
 }
 
 // Basic API check route
-app.get('/', (req, res) => {
+app.get('/apii', (req, res) => {
   res.send("Blog MERN Backend is running...");
 });
 
